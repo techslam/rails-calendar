@@ -1,0 +1,28 @@
+Calendar for <%= @show_month.strftime('%B %Y') %>
+<%= link_to_remote "next", :url => {:controller=>"calendar",:action => "new_calendar"},:with   => "'new_month=#{@show_month.month+1}'+ '&passed_date=#{@show_month}'" %>
+<%= link_to_remote "previous", :url => {:controller=>"calendar",:action => "new_calendar"},:with   => "'new_month=#{@show_month.month-1}'+ '&passed_date=#{@show_month}'" %>
+<table border="0" cellspacing="0" cellpadding="3" align="center">
+  <tbody>
+  <tr bgcolor="#cccccc">
+    <% @days_of_week= ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"] %>
+    <% @days_of_week.each do |d| %>
+      <td align="center"><strong><%= d %></strong></td>
+    <% end %>
+  </tr>
+  <% (1..6).each do |r|%>
+    <tr>
+      <% (1..7).each do |c|%>
+        <td>
+          <% dt = c - @start_date_day + (r-1)*7 %>
+          <% unless (r == 1 and c <= @start_date_day) %>
+            <% unless dt > @last_day.day %>
+              <%= link_to_remote dt, :url => {:controller=>"calendar",:action => "quote"},:with   => "'month=#{@show_month.month}' + '&day=#{dt}'",:update=>"test" %>
+            <% end %>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+<div id="test"></div>
+
